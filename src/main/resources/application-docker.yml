@@ -1,0 +1,11 @@
+noodev:
+  mariadb:
+    datasource:
+      url: ${DATABASE_MARIA_URI}
+      username: ${DATABASE_MARIA_USER}
+      password: ${DATABASE_MARIA_PASSWORD}
+jwt:
+  secret: ${JWT_SECRET_KEY}
+  email-verification:
+    type: ${JWT_EMAIL_VERIFICATION_TYPE}
+    durationInSeconds: ${JWT_EMAIL_VERIFICATION_DURATION}

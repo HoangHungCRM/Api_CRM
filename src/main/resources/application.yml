@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: crm-user-service
+    version: @project.version@
+  profiles:
+    default: local
+  servlet:
+    multipart:
+      max-file-size: -1
+      max-request-size: -1
+server:
+  port: 9998
+  servlet:
+    context-path: /vusr
+noodev:
+  logs:
+    level: INFO # Optional. Default is INFO
+    kpi-logs:
+      application-code: MY-APPLICATION # Optional. Default ApplicationCode value
+      service-code: ${spring.application.name} # Optional. Default ServiceCode value
+      allow-url-patterns: /**
+
+

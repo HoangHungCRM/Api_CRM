@@ -1,0 +1,11 @@
+noodev:
+  mariadb:
+    datasource:
+      url: jdbc:mariadb://192.168.1.26:3306/crm_dev_db
+      username: resdii-admin
+      password: Resdii123456
+jwt:
+  secret: 2B4D6251655468576D5A7134743777217A25432A462D4A404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970337336763979244226
+  email-verification:
+    type: Verification
+    durationInSeconds: 259200
