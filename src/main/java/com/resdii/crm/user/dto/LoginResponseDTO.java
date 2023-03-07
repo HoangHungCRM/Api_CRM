@@ -23,8 +23,15 @@ public class LoginResponseDTO implements Serializable {
 //
 //    }
 
+//    public String getToken(String token) {
+//        return this.token;
+//    }
+
     public String getToken() {
-        return this.token;
+        return token;
     }
 
+    public void setToken(String token) {
+        this.token = token;
+    }
 }

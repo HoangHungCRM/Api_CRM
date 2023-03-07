@@ -8,5 +8,7 @@ import lombok.NoArgsConstructor;
 public class UserInfoDTO{
     private String username;
     private String password;
-    private String fullName;
+
+    public void setId(String id) {
+    }
 }

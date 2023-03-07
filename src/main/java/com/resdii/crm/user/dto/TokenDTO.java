@@ -8,4 +8,7 @@ import lombok.NoArgsConstructor;
 public class TokenDTO {
     private String accessToken;
     private String refreshToken;
+
+    public void getAccessToken(String token) {
+    }
 }
