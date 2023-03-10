@@ -8,5 +8,5 @@ import java.math.BigInteger;
 
 @Repository
 public interface TestRepository extends MariaRepository<Test, BigInteger> {
-
+//    Test findById(String id);
 }

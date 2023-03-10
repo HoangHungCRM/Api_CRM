@@ -1,12 +1,16 @@
 package com.resdii.crm.user.service.impl;
 
 import com.resdii.crm.user.config.JwtTokenUtil;
+import com.resdii.crm.user.domain.RolesUsers;
 import com.resdii.crm.user.domain.Test;
 import com.resdii.crm.user.domain.User;
 import com.resdii.crm.user.dto.*;
+import com.resdii.crm.user.repository.RoleRepository;
+import com.resdii.crm.user.repository.RoleUserRepository;
 import com.resdii.crm.user.repository.UserRepository;
 import com.resdii.crm.user.service.AuthService;
-import liquibase.pro.packaged.L;
+import com.resdii.ms.common.utils.JsonUtils;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,11 +18,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestHeader;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.io.UnsupportedEncodingException;
+import java.util.*;
 
 @Service
 public class AuthServiceImpl extends BaseServiceImpl implements AuthService {
@@ -28,52 +31,39 @@ public class AuthServiceImpl extends BaseServiceImpl implements AuthService {
     private UserRepository userRepository;
 
     @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
+    private RoleUserRepository roleUserRepository;
+
+    @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
     @Autowired
     private PasswordEncoder bcryptEncoder;
 
+
+//    public void testDecodeJWT(@RequestHeader String token) {
+//        String jwtToken = token.split("\\.")[1];
+//
+//    }
     @Override
     public LoginResponseDTO login(LoginRequestDTO loginRequest) {
-
         User user = userRepository.findByUsername(loginRequest.getUsername());
-//        String passwordEncoded = bcryptEncoder.encode(loginRequest.getPassword());
-//        String paswordmd5 = loginRequest.getPassword();
-//        String paswordmd5 = "042acd3e4652355c873915a09df728d1";
         String passwordmd5 = DigestUtils.md5Hex(loginRequest.getPassword()).toLowerCase();
-//        System.out.printf(paswordmd5);
-        //throw new UsernamNotFoundException(passwordEncoded);
         if (user == null) {
             throw new UsernameNotFoundException("User not found with username: " + loginRequest.getUsername());
         } else {
-
             if (bcryptEncoder.matches(passwordmd5, user.getPassword())) {
                 Map<String, Object> claims = new HashMap<>();
-                LoginResponseDTO loginResponseDTO =new LoginResponseDTO();
+
                 String token = jwtTokenUtil.generateToken(userRepository.findByUsername(loginRequest.getUsername()));
-//              String token = jwtTokenUtil.doGenerateToken(claims, user.getUsername());
-                loginResponseDTO.setToken(token);
+                LoginResponseDTO loginResponseDTO =new LoginResponseDTO(token);
                 return loginResponseDTO;
-                //throw new UsernameNotFoundException(passwordEncoded);
-//                LoginResponseDTO loginResponseDTO=new LoginResponseDTO();
-//                String token = jwtTokenUtil.generateToken(userRepository.findByUsername(loginRequest.getUsername()));
-//                loginResponseDTO.getToken(token);
-//                return loginResponseDTO;
-//                UserInfoDTO userInfo = new UserInfoDTO();
-//                userInfo.setFullName(user.getUsername());
-//                return userInfo;
             } else {
                 throw new UsernameNotFoundException("Mkhau không chính xác " + user.getPassword());
             }
-
         }
-
-//        if(!"admin".equals(loginRequest.getUsername()) || !"admin".equals(loginRequest.getPassword())){
-//            throw new InvalidRequestException("Account is invalid");
-//        }
-//        UserInfoDTO userInfo = new UserInfoDTO();
-//        userInfo.setFullName("Administrator");
-//        return userInfo;
     }
 
     @Override
@@ -81,6 +71,29 @@ public class AuthServiceImpl extends BaseServiceImpl implements AuthService {
         List<Test> testList = testRepository.findAll();
         return testMapper.toDest(testList);
     }
+    @Override
+    public List<RoleUser> getListRoleUser(){
+
+        List<RolesUsers> rolesUsersList = (List<RolesUsers>) roleUserRepository.findByUser_id("b2ff958f-1aab-0ed0-129e-64000402ecf4");
+        return roleUserMapper.toDest(rolesUsersList);
+    }
+    @Override
+    public UserInfoDTO getUserInfo(@RequestHeader(name = "Authorization") String token) throws UnsupportedEncodingException {
+        String jwtToken = token.split("\\.")[1];
+        String a = new String(Base64.decodeBase64(jwtToken), "UTF-8");
+        DecodeJWT details = JsonUtils.parseObject(a, DecodeJWT.class);
+
+        User user =userRepository.findUserById(details.getSub());
+        return userInforMapper.toDest(user);
+    }
 
 
+//    @Override
+//    public User userInfor(@RequestHeader(name = "Authorization") String token) throws UnsupportedEncodingException {
+//        String jwtToken = token.split("\\.")[1];
+//        String a = new String(Base64.decodeBase64(jwtToken), "UTF-8");
+//        DecodeJWT details = JsonUtils.parseObject(a, DecodeJWT.class);
+//        User user =userRepository.findUserById(details.getSub());
+//        return user;
+//    }
 }

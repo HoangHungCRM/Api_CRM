@@ -24,7 +24,7 @@ import java.util.Map;
 @Configuration
 //@EnableWebSecurity
 //@EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SecurityConfig {
+public class SecurityConfig{
 
 
     @Autowired
@@ -34,8 +34,7 @@ public class SecurityConfig {
 //    @Autowired
 //    private UserDetailsService jwtUserDetailsService;
 //
-//    @Autowired
-//    private JwtRequestFilter jwtRequestFilter;
+
 //
 //    @Autowired
 //    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -51,6 +50,21 @@ public class SecurityConfig {
 //    encoder.
         return encoder;
     }
+//    @Override
+//    protected void configure(HttpSecurity http) throws Exception {
+//        http
+//                .csrf().disable()
+//                .authorizeRequests()
+//                .antMatchers("/login").permitAll()
+//                .anyRequest().authenticated()
+//                .and()
+//                .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
+//                .and()
+//                .sessionManagement()
+//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+//
+//        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+//    }
 //@Override
 //    protected void configure(HttpSecurity http) throws Exception {
 //        http.csrf().disable()

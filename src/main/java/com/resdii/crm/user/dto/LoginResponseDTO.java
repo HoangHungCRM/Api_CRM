@@ -11,12 +11,13 @@ public class LoginResponseDTO implements Serializable {
     private static final long serialVersionUID = -8091879091924046844L;
     private String token;
 
-    public LoginResponseDTO(String token) {
-        this.token = token;
-    }
 
     public LoginResponseDTO() {
 
+    }
+
+    public LoginResponseDTO(String token) {
+        this.token = token;
     }
 
 //    public LoginResponseDTO() {
@@ -28,10 +29,11 @@ public class LoginResponseDTO implements Serializable {
 //    }
 
     public String getToken() {
-        return token;
+        return this.token;
     }
 
     public void setToken(String token) {
         this.token = token;
     }
+
 }

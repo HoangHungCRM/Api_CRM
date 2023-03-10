@@ -5,8 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class UserInfoDTO{
-    private String id;
-    private String username;
-    private String lastname;
+public class RoleUser {
+    private String user_id;
+    private String role_id;
 }

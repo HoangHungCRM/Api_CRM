@@ -9,7 +9,8 @@ import javax.persistence.Entity;
 @Entity(name = "users")
 public class Test extends BaseEntity{
     private @Column(name = "user_name") String username;
-    private @Column(name = "first_name") String firstname;
+    private @Column(name = "user_hash") String password;
+    private @Column(name = "last_name") String lastname;
 
 
 

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import com.resdii.crm.user.domain.User;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SignatureException;
 import org.slf4j.Logger;
@@ -18,9 +19,7 @@ import org.springframework.stereotype.Component;
 public class JwtTokenUtil implements Serializable {
     private static final long serialVersionUID = -2550185165626007488L;
 
-    public static final long JWT_TOKEN_VALIDITY = 5*60*60;
-
-    private static final Logger LOGGER= LoggerFactory.getLogger(JwtTokenUtil.class);
+    public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
 
     @Value("${jwt.secret}")
     private String secret;
@@ -56,46 +55,23 @@ public class JwtTokenUtil implements Serializable {
         return false;
     }
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(User user) {
         Map<String, Object> claims = new HashMap<>();
-        return doGenerateToken(claims, userDetails.getUsername());
+        return doGenerateToken(claims, user.getId());
     }
 
     public String doGenerateToken(Map<String, Object> claims, String subject) {
 
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY*1000)).signWith(SignatureAlgorithm.HS512, secret).compact();
+                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000)).signWith(SignatureAlgorithm.HS512, secret).compact();
     }
 
     public Boolean canTokenBeRefreshed(String token) {
         return (!isTokenExpired(token) || ignoreTokenExpiration(token));
     }
 
-    public Boolean validateToken(String token, UserDetails userDetails) {
+    public Boolean validateToken(String token, User user) {
         final String username = getUsernameFromToken(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        return (username.equals(user.getUsername()) && !isTokenExpired(token));
     }
-//    public boolean validateToken(String token){
-//        try {
-//            Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
-//            return true;
-//        } catch (ExpiredJwtException ex){
-//            LOGGER.error("JWT expired" + ex);
-//        } catch (IllegalArgumentException ex){
-//            LOGGER.error("Token is null, empty or has only whitespace" + ex);
-//        } catch (MalformedJwtException ex){
-//            LOGGER.error("JWT is invalid"+ex);
-//        } catch (UnsupportedJwtException ex){
-//            LOGGER.error("JWT is not supported" + ex);
-//        }catch (SignatureException ex){
-//            LOGGER.error("Signature validation failed" + ex);
-//        }
-//        return false;
-//    }
-//    public String getSubject(String token){
-//        return parseClaims(token).getSubject();
-//    }
-//    public Claims parseClaims(String token){
-//        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
-//    }
 }
