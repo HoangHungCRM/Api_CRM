@@ -35,13 +35,9 @@ public class User extends BaseEntity{
     @Column(name = "first_name")
     private String firstname;
 
-//    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    @JoinTable(
-//            name = "acl_roles_users",
-//            joinColumns = @JoinColumn(name = "user_id"),
-//            inverseJoinColumns = @JoinColumn(name = "roles_id")
-//    )
-//    private Set<Roles> roles = new HashSet<>();
+    @ManyToMany
+    @JoinTable(name = "acl_roles_users", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    private Collection<Roles> roles;
 
     public String getFirstname() {
         return firstname;

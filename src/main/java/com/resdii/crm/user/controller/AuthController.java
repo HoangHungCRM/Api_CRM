@@ -21,17 +21,18 @@ import java.io.UnsupportedEncodingException;
 @RestController
 @RequestMapping("/auth")
 public class AuthController extends BaseRestController {
-    @Autowired
+
     private UserRepository userRepository;
 
     private AuthService userService;
-    @Autowired
+
     private JwtTokenUtil jwtTokenUtil;
 
     /**
      * Dang nhap
      * @return
      */
+
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody LoginRequestDTO loginRequest) {
         return RestUtils.responseOk(userService.login(loginRequest));
@@ -55,5 +56,13 @@ public class AuthController extends BaseRestController {
         this.userService = userService;
     }
 
+    @Autowired
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
+    @Autowired
+    public void setJwtTokenUtil(JwtTokenUtil jwtTokenUtil) {
+        this.jwtTokenUtil = jwtTokenUtil;
+    }
 }

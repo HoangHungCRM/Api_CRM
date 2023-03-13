@@ -15,12 +15,12 @@ public interface RoleUserMapper extends IBaseMapper<RolesUsers, RoleUser>{
 
     @Override
     @Named("toListItemDest")
-    @Mapping(target = "user_id", source = "user_id")
-    @Mapping(target = "role_id", source = "role_id")
+    @Mapping(target = "userId", source = "userId")
+    @Mapping(target = "roleId", source = "roleId")
     RoleUser toListItemDest(RolesUsers rolesUsers);
 
     @Override
-    @Mapping(target = "user_id", source = "user_id")
-    @Mapping(target = "role_id", source = "role_id")
+    @Mapping(target = "userId", source = "userId")
+    @Mapping(target = "roleId", source = "roleId")
     RoleUser toDest(RolesUsers rolesUser);
 }

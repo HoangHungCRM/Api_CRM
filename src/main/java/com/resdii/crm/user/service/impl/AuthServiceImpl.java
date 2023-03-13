@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestHeader;
 
@@ -42,11 +43,11 @@ public class AuthServiceImpl extends BaseServiceImpl implements AuthService {
     @Autowired
     private PasswordEncoder bcryptEncoder;
 
-
 //    public void testDecodeJWT(@RequestHeader String token) {
 //        String jwtToken = token.split("\\.")[1];
 //
 //    }
+
     @Override
     public LoginResponseDTO login(LoginRequestDTO loginRequest) {
         User user = userRepository.findByUsername(loginRequest.getUsername());
@@ -73,8 +74,8 @@ public class AuthServiceImpl extends BaseServiceImpl implements AuthService {
     }
     @Override
     public List<RoleUser> getListRoleUser(){
-
-        List<RolesUsers> rolesUsersList = (List<RolesUsers>) roleUserRepository.findByUser_id("b2ff958f-1aab-0ed0-129e-64000402ecf4");
+        User user= new User();
+        List<RolesUsers> rolesUsersList = roleUserRepository.findByUserId(user.getId());
         return roleUserMapper.toDest(rolesUsersList);
     }
     @Override

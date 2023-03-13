@@ -12,9 +12,9 @@ import javax.persistence.Table;
 public class RolesUsers extends BaseEntity{
 
     @Column(name = "user_id")
-    private String user_id;
+    private String userId;
 
     @Column(name = "role_id")
-    private String role_id;
+    private String roleId;
 
 }

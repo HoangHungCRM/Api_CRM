@@ -10,11 +10,18 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.web.util.UrlPathHelper;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -24,7 +31,7 @@ import java.util.Map;
 @Configuration
 //@EnableWebSecurity
 //@EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SecurityConfig{
+public class SecurityConfig {
 
 
     @Autowired
@@ -35,7 +42,7 @@ public class SecurityConfig{
 //    private UserDetailsService jwtUserDetailsService;
 //
 
-//
+    //
 //    @Autowired
 //    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 //        // configure AuthenticationManager so that it knows from where to load
@@ -50,54 +57,18 @@ public class SecurityConfig{
 //    encoder.
         return encoder;
     }
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//        http
-//                .csrf().disable()
-//                .authorizeRequests()
-//                .antMatchers("/login").permitAll()
-//                .anyRequest().authenticated()
-//                .and()
-//                .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
-//                .and()
-//                .sessionManagement()
-//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-//
-//        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-//    }
-//@Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//        http.csrf().disable()
-//                // dont authenticate this particular request
-//                .authorizeRequests().antMatchers("/auth/login").permitAll().
-//                // all other requests need to be authenticated
-//                        anyRequest().authenticated().and().
-//                // make sure we use stateless session; session won't be used to
-//                // store user's state.
-//                        exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
-//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-//
-//    }
-//}
-//
-//
-////
-//    @Bean
-//    @Override
-//    public AuthenticationManager authenticationManagerBean() throws Exception {
-//        return super.authenticationManagerBean();
-//    }
-
-//    @Override
-//    protected void configure(HttpSecurity httpSecurity) throws Exception {
-//
-//        httpSecurity.csrf().disable()
-//                .authorizeRequests().antMatchers("/validate", "/create").permitAll().
-//                anyRequest().authenticated().and().
-//                exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
-//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-//
-//
-//        httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-//    }
+    
 }
+//    @Override
+//    protected void configure(HttpSecurity http) throws Exception {
+//        http.logout().logoutSuccessHandler(new LogoutSuccessHandler() {
+//            @Override
+//            public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+//                System.out.println("The user" + authentication.getName()+"has logged out");
+//                UrlPathHelper helper = new UrlPathHelper();
+//                String context = helper.getContextPath(request);
+//
+//                response.sendRedirect(context+ "/login");
+//            }
+//        }).permitAll();
+//
